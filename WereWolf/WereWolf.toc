@@ -1,0 +1,19 @@
+## Interface: 80300
+## Title: Werewolf
+## Author: Darkside - Medivh
+## Version: 0.0.1
+## Notes: Mini games for you and your paty members
+## Notes-frFR: Un mini jeu pour vous et vos membre de groupes
+## DefaultState: Disabled
+## SavedVariables: WerewolfDB
+
+embeds.xml
+Init.lua
+locales.xml
+
+Communications.lua
+
+Rules.lua
+WereWolf.lua
+GameFrame.lua
+#timer.lua
