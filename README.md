@@ -7,9 +7,9 @@
 
 
 ## Addon commands
-/ww show : Show the main panel
-/ww help : show help
-/ww minimap : toggle the minimap button
+/ww show : Show the main panel  
+/ww help : show help  
+/ww minimap : toggle the minimap button  
 
 ## Addon rules
 ...
