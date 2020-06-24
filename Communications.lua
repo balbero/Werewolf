@@ -38,10 +38,21 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
 			elseif command == "set_day" then
 				WereWolf.ShowTimerFrame(L["The day rises again with its shinny sun and its grim discovery..."], 10)
 			elseif command == "set_seer" then
+				if WereWolf.me.Role.Name == "Seer" then
+					-- authorize me to click twice on char portrait
+					WereWolf.EnableAndAuthorizeClick(1)
+				end
 				WereWolf.ShowTimerFrame(L["Seer, wake up and claim the real nature of one of your fellow!"], 60)
 			elseif command == "set_rogue" then
+				if WereWolf.me.Role.Name == "Rogue" then
+					WereWolf.DisplayRogueInterface()
+				end
 				WereWolf.ShowTimerFrame(L["Rogue, wake up and do your sneaky thing!"], 60)
 			elseif command == "set_cupid" then
+				if WereWolf.me.Role.Name == "Cupid" then
+					-- authorize me to click twice on char portrait
+					WereWolf.EnableAndAuthorizeClick(2)
+				end
 				WereWolf.ShowTimerFrame(L["Cupid, wake up and throw your arrows!"], 60)
 			elseif command == "set_lover" then
 				WereWolf.ShowTimerFrame(L["Lovers, wake up and face your beloved!"], 20)
@@ -56,6 +67,16 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
 			elseif command == "game_ends" then
 				local val = unpack(data);
 				WereWolf.ShowTimerFrame(val, 10)
+			elseif command == "ww_player_designated" then
+				if WereWolf.currentStep == "Cupid" then
+					WereWolf.me.isLover = true
+				elseif WereWolf.currentStep == "Seer" then
+					local player = unpack(data);
+					WereWolf.DiscoverPlayerRole(player);
+				elseif WereWolf.currentStep == "Vote" then
+					local designatedPlayer, votedPlayer = unpack(data);
+					WereWolf.ManageVote(designatedPlayer, votedPlayer)
+				end
 			end
         end
     end

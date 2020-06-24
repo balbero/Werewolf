@@ -23,6 +23,10 @@ L["Game Rules"] = "Règles du jeu"
 L["Game Setup"] = "Configuration de la partie"
 L["GamePanel"] = "Panneau de jeu"
 
+-- Rogue panel
+L["You choose : "] = "Vous avez choisi : "
+L["Choose Wisely"] = "Choisissez sagement"
+
 -- Info tab
 L["GameGoalHeader"] = "BUT DU JEU"
 L["GameDescription"] = "Pour les Villageois: éliminer les Loups-Garous\nPour les Loups-Garous: éliminer les Villageois"
@@ -88,3 +92,4 @@ L["Lovers, wake up and face your beloved!"] = "Réveillez vous Amants et regarde
 L["Seer, wake up and claim the real nature of one of your fellow!"] = "Réveillez vous Voyante et réclamez la vrai nature d'un de vos compagnons!"
 L["Werewolves, wake up and eat, eat till your hunger are filled!"] = "Loups-garou, réveillez vous et mangez, mangez jusqu'à ce que votre faim disparaisse!"
 L["Witch, wake up and decides with your potions!"] = "Réveillez vous Sorcière et décidez à l'aide de vos potions!"
+L["You can not choose him twice"] = "Vous ne pouvez pas le choisir deux fois"

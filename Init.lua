@@ -19,6 +19,7 @@ WereWolf.halfWidth = WereWolf.normalWidth / 2
 WereWolf.doubleWidth = WereWolf.normalWidth * 2
 WereWolf.me = {}
 WereWolf.players = {}
+WereWolf.currentStep = "";
 
 WereWolf.isDevVersion = isDevVersion
 
@@ -133,7 +134,9 @@ function core:init(event, name)
 		Class = select(2, UnitClass("player")),
 		Role = nil,
 		hasVoted = false,
-		isAlive = true
+		isAlive = true,
+		isLover = false,
+		voteNb = 0
 	}
 	table.insert(WereWolf.players, WereWolf.me)
 
@@ -160,7 +163,8 @@ function core:init(event, name)
 				Class = knownClass[classIndex],
 				Role = nil,
 				hasVoted = false,
-				isAlive = true
+				isAlive = true,
+				isLover = false
 			}
 			table.insert(WereWolf.players, dummy)
 		end

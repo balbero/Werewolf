@@ -27,7 +27,6 @@ local minWidth = 750
 local minHeight = 240
 
 local MainFrame;
-local GameFrame;
 WereWolf.MainFrame = MainFrame
 local players = WereWolf.players
 
@@ -267,13 +266,6 @@ function WereWolf.IsOptionsOpen()
     end
 end
   
-function WereWolf.IsGameOpen()
-    if(GameFrame and GameFrame:IsVisible()) then
-        return true;
-    else
-        return false;
-    end
-end
 
 function WereWolf.IsShown()
     if(WereWolf.IsOptionsOpen()) then

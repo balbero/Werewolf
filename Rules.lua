@@ -172,16 +172,18 @@ if not WereWolf.IsCorrectVersion() then
     return
 end
 
+local L = WereWolf.L
 local WereWolf = WereWolf
 local Comm = WereWolf.Comm
 local players = WereWolf.players
 
 
-local L = WereWolf.L
 
 local UnitGUID, UnitClass = UnitGUID, UnitClass
 
 local stereotypes = {
+    -- add notion for lover and remove the role
+    -- werewolf can be lovers
     werewolf = {
         Class = L["Werewolf"],
         Name = L["Werewolf"],
@@ -253,13 +255,6 @@ local stereotypes = {
         Tips = L["Each night, can discover the true nature of players"],
         Goal = L["Survive to werewolf attacks"],
     },
-    lover = {
-        Class = L["Peon"],
-        Name = L["Lover"],
-        Icon = 135450,
-        Tips = L["Cannot survive if the other one dies."],
-        Goal = L["Survive to werewolf attacks"],
-    },
     gamemaster = {
         Class = L["Game Master"],
         Name = L["Game Master"],
@@ -287,7 +282,8 @@ function WereWolf.AddPlayer(playerName)
             Class = select(2, UnitClass(playerName)),
             Role = nil,
             hasVoted = false,
-            isAlive = true
+            isAlive = true,
+            isLover = false
         }
         table.insert(players, player)
     else
@@ -327,34 +323,33 @@ local peonNumber = 0;
 local specialPeonNumber = 0;
 local werewolfNumber = 0;
 local seerApplyed = false;
-local currentStep = "";
 local isSetupStep = false;
 
 function WereWolf.NextStep()
-    if currentStep == "" or currentStep == "Vote" then
+    if WereWolf.currentStep == "" or WereWolf.currentStep == "Vote" then
         WereWolf.SetNight()
     else
         if isSetupStep then            
-            if currentStep == "Night" then
+            if WereWolf.currentStep == "Night" then
                 WereWolf.WakeUpRogue()
-            elseif currentStep == "Rogue" then
+            elseif WereWolf.currentStep == "Rogue" then
                 WereWolf.WakeUpCupid()
-            elseif currentStep == "Cupid" then
+            elseif WereWolf.currentStep == "Cupid" then
                 WereWolf.WakeUpLovers()
-            elseif currentStep == "Lovers" then
+            elseif WereWolf.currentStep == "Lovers" then
                 WereWolf.WakeUpSeer()
             end
         else
             if WereWolf.CanContinue() then
-                if currentStep == "Night" then
+                if WereWolf.currentStep == "Night" then
                     WereWolf.WakeUpSeer()
-                elseif currentStep == "Seer" then
+                elseif WereWolf.currentStep == "Seer" then
                     WereWolf.WakeUpWerewolves()
-                elseif currentStep == "Werewolves" then
+                elseif WereWolf.currentStep == "Werewolves" then
                     WereWolf.WakeUpWitch()
-                elseif currentStep == "Witch" then
+                elseif WereWolf.currentStep == "Witch" then
                     WereWolf.SetDay()
-                elseif currentStep == "Day" then
+                elseif WereWolf.currentStep == "Day" then
                     WereWolf.Vote()
                 end
             else
@@ -378,7 +373,7 @@ function WereWolf.Reset()
     peonNumber = 0
     specialPeonNumber = 0
     werewolfNumber = 0
-    currentStep = ""
+    WereWolf.currentStep = ""
     isSetupStep = true
 end
 
@@ -453,7 +448,7 @@ function WereWolf.SendRoleToAllPlayer()
 end
 
 function WereWolf.SetNight()
-    currentStep = "Night"
+    WereWolf.currentStep = "Night"
 
     WereWolf.prettyPrint(L["The night fall on the village and everyone fells asleep"])
     for key, value in pairs(players) do
@@ -474,7 +469,7 @@ function WereWolf.SetDay()
         Si un des joueurs est un des deux Amoureux, l'autre Amoureux meurt de chagrin immédiatement.
         Si un des joueurs est le Capitaine, il désigne son successeur.
     --]]
-    currentStep = "Day"
+    WereWolf.currentStep = "Day"
     isSetupStep = false
     WereWolf.prettyPrint(L["The day rises again with its shinny sun and its grim discovery..."])
     for key, value in pairs(players) do
@@ -495,7 +490,7 @@ function WereWolf.Vote()
     S'il y a toujours égalité, aucun joueur n'est éliminé.
     Le joueur éliminé révèle sa carte et ne pourra plus communiquer avec les autres joueurs d'aucune manière.
     --]]
-    currentStep = "Vote"
+    WereWolf.currentStep = "Vote"
     isSetupStep = false
     
     WereWolf.prettyPrint(L["Villagers vote! Point the one who killed!"])
@@ -520,7 +515,7 @@ local function IsRolePick(role)
 end 
 
 function WereWolf.WakeUpRogue()
-    currentStep = "Rogue"
+    WereWolf.currentStep = "Rogue"
 
     if IsRolePick(L["Rogue"]) then
         WereWolf.prettyPrint(L["Rogue, wake up and do your sneaky thing!"])
@@ -533,7 +528,7 @@ function WereWolf.WakeUpRogue()
 end
 
 function WereWolf.WakeUpCupid()
-    currentStep = "Cupid"
+    WereWolf.currentStep = "Cupid"
     if IsRolePick(L["Cupid"]) then
         WereWolf.prettyPrint(L["Cupid, wake up and throw your arrows!"])
         for key, value in pairs(players) do
@@ -545,7 +540,7 @@ function WereWolf.WakeUpCupid()
 end
 
 function WereWolf.WakeUpLovers()
-    currentStep = "Lovers"
+    WereWolf.currentStep = "Lovers"
     if IsRolePick(L["Lover"]) then
         WereWolf.prettyPrint(L["Lovers, wake up and face your beloved!"])
         for key, value in pairs(players) do
@@ -557,7 +552,7 @@ function WereWolf.WakeUpLovers()
 end
 
 function WereWolf.WakeUpSeer()
-    currentStep = "Seer"
+    WereWolf.currentStep = "Seer"
     isSetupStep = false
 
     if IsRolePick(L["Seer"]) then
@@ -572,7 +567,7 @@ function WereWolf.WakeUpSeer()
 end
 
 function WereWolf.WakeUpWerewolves()
-    currentStep = "Werewolves"
+    WereWolf.currentStep = "Werewolves"
     isSetupStep = false
     WereWolf.prettyPrint(L["Werewolves, wake up and eat, eat till your hunger are filled!"])
     for key, value in pairs(players) do
@@ -583,7 +578,7 @@ function WereWolf.WakeUpWerewolves()
 end
 
 function WereWolf.WakeUpWitch()
-    currentStep = "Witch"
+    WereWolf.currentStep = "Witch"
     isSetupStep = false
 
     if IsRolePick(L["Witch"])  then
@@ -665,7 +660,34 @@ function WereWolf.SetRoleToAllPlayer()
     end
 end
 
-function WereWolf.DeathOfPlayer(player)
+function WereWolf.GetAvailabelRoleForRogue()
+    local possibleRole = {}
+
+    for i=0,2 do 
+        if not (werewolfNumber == #players / 4) then
+            table.insert(possibleRole, stereotypes.werewolf)
+        elseif not(specialPeonNumber == #players / 4) then
+            local availableClass = {}
+            for key, value in pairs(stereotypes.special) do
+                if value.isApplyed == false then
+                    table.insert(availableClass, value)
+                end
+            end
+            
+            if #availableClass > 0 then
+                local classType = math.random(#availableClass)
+                local newRole = availableClass[classType]
+                table.insert(possibleRole, newRole)
+            end
+        else
+            table.insert(possibleRole, stereotypes.peon)
+        end
+    end
+
+    return possibleRole
+end
+
+function WereWolf.ManageDeathOfPlayer(player)
     if player.Role.Class == L["Hunter"] then
         -- another should die
         -- WereWolf.AllowPlayerToPointFollower(player)

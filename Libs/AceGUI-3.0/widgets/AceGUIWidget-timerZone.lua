@@ -11,6 +11,7 @@ local CreateFrame, UIParent = CreateFrame, UIParent
 
 local timeLeft = 0;
 local timerTimeOut = 0;
+local fireEvent = true;
 
 local function Frame_UpdateTimer(frame)
 	local elapsed = GetTime() - timeLeft
@@ -21,7 +22,9 @@ local function Frame_UpdateTimer(frame)
     else
 		self.timeoutBar:SetValue(0)
 		
-        self:Fire("TimerEnds")
+		if fireEvent then
+			self:Fire("TimerEnds")
+		end
     end
 end
 
@@ -35,10 +38,12 @@ local methods = {
 		self:SetLabel("")
 		self.isVisible = false
 		timeLeft = GetTime()
+		fireEvent = true
 	end,
 
 	["ResetTimer"] = function(self)
 		timeLeft = GetTime()
+		fireEvent = true
 	end, 
 
 	-- ["OnRelease"] = nil,
@@ -72,11 +77,14 @@ local methods = {
 	end,
 
 	["HideTimer"] = function(self)
+		fireEvent = false
+		self.timeoutBar:SetValue(0)
 		self.isVisible = false
 		self.timeoutBar:Hide()
 	end,
 
 	["ShowTimer"] = function(self)
+		fireEvent = true
 		self.isVisible = true
 		self.timeoutBar:Show()
 	end

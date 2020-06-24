@@ -18,11 +18,9 @@ L["Game Rules"] = "Game Rules"
 L["Game Setup"] = "Game Setup"
 L["GamePanel"] = "Game Panel"
 
-L["Kill"] = "Kill!"
-
--- Timer frame translation
-L["Time Left"] = "Time Left"
-L["Game starting"] = "Game starting"
+-- Rogue panel
+L["You choose : "] = "You choose : "
+L["Choose Wisely"] = "Choose Wisely"
 
 -- Info tab
 L["GameGoalHeader"] = "GOALS"
@@ -40,6 +38,15 @@ L["GameCharCaptain"] = "Cette carte est confiée à un des joueurs, en plus de s
 L["GameCharRogue"] = "Si on veut jouer le Voleur, il faut ajouter deux cartes Simples Villageois en plus de toutes celles déja choisies. Après disttribution, les deux cartes non distribuées sont placées au centre de la table face cachée. La première nuit, le voleur pourra prendre connaissance de ses deux cartes, et échanger sa carte contre l'une des deux autres. Si ces deux cartes sont des Loups Garous, il est obligé d'échanger sa carte contre un des deux Loups Garous. Il jouera désormais ce personnage jusqu'à la fin de la partie."
 L["GameCharLover"] = "Si l'un des amoureux est éliminé, l'autre meurt de chagrin immédiatement. Un Amoureux ne doit jamais voter contre son aimé (même pour faire semblant !) Attention: Si l'un des deux Amoureux est un Loup-Garou et l'autre un Villageois, le but de la partie change pour eux. Pour vivre en paix leur amour et gagner la partie, ils doivent éliminer tous les autres joueurs , Loups-Garous et Villageois, en respectant les règles du jeu."
 
+-- Char tab
+L["Kill"] = "Kill!"
+L["Werewolves"] = "Werewolves"
+L["Peons"] = "Peons"
+L["win"] = "win!"
+
+-- Timer frame translation
+L["Time Left"] = "Time Left"
+L["Game starting"] = "Game starting"
 
 -- Options translation
 L["Werewolf"] = "Werewolf"
@@ -82,3 +89,4 @@ L["Lovers, wake up and face your beloved!"] = "Lovers, wake up and face your bel
 L["Seer, wake up and claim the real nature of one of your fellow!"] = "Seer, wake up and claim the real nature of one of your fellow!"
 L["Werewolves, wake up and eat, eat till your hunger are filled!"] = "Werewolves, wake up and eat, eat till your hunger are filled!"
 L["Witch, wake up and decides with your potions!"] = "Witch, wake up and decides with your potions!"
+L["You can not choose him twice"] = "You can not choose him twice"

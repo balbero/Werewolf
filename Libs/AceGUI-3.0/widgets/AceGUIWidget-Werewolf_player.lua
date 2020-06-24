@@ -108,6 +108,7 @@ local function Constructor()
 	frame:EnableMouse(true)
 	frame:SetScript("OnEnter", Control_OnEnter)
 	frame:SetScript("OnLeave", Control_OnLeave)
+	frame:SetScript("OnClick", Button_OnClick)
 
 	local label = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlight")
 	label:SetPoint("BOTTOMLEFT")

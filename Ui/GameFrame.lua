@@ -10,6 +10,15 @@ local GameFrame;
 local Comm = WereWolf.Comm
 
 local layouts = {}
+local nbClickAuth = 0;
+
+function WereWolf.IsGameOpen()
+    if(GameFrame and GameFrame:IsVisible()) then
+        return true;
+    else
+        return false;
+    end
+end
 
 function WereWolf.DisplayGameFrame()
     local isOpen = WereWolf.IsGameOpen();
@@ -35,7 +44,12 @@ function WereWolf.CreatePlayerFrame(content, player, col, line)
     local playerZone = AceGUI:Create("PlayerZone")        
     local color = RAID_CLASS_COLORS[player.Class]
     playerZone:SetColor(color.r, color.g, color.b)
+    playerZone:SetDisabled(true)
     playerZone:SetLabel(player.Name)
+    playerZone:SetCallback("OnClick", 
+        function() 
+            WereWolf.SaveClickedPortrait(player) 
+        end)
 
     local playerVoteButton = AceGUI:Create("Button")
     playerVoteButton:SetWidth(115)
@@ -109,4 +123,51 @@ function WereWolf.DiscoverPlayerRole(player)
     WereWolf.DisplayGameFrame()
     
     player.RoleZone:SetImage(player.Role.Icon)
+end
+
+local clickedPlayers = { };
+function WereWolf.SaveClickedPortrait(player)
+    if(nbClickAuth > 0) then
+        local found = false
+        for key, value in pairs(clickedPlayers) do
+            if(value.id == player.id) then
+                    found = true
+                break
+            end
+        end
+        if found then
+            WereWolf.prettyPrint(L["You can not choose him twice"])
+        else
+            nbClickAuth = nbClickAuth - 1
+            table.insert(clickedPlayers, player)
+        end
+    end
+
+    if(nbClickAuth == 0) then
+        for key, value in pairs(layouts) do
+            value.playerZone:SetDisabled(true)
+        end
+        for key, value in pairs(clickedPlayers) do
+            -- send message
+            if(WereWolf.currentStep == "Cupid") then
+                Comm:SendCommand(value.Name, "ww_player_designated")
+            elseif (WereWolf.currentStep == "Seer") then
+                Comm:SendCommand(WereWolf.me.Name, "ww_player_designated", value)
+            end
+        end
+        
+        for key,value in pairs(players) do
+            Comm:SendCommand(value.Name, "next_step")
+        end
+    end
+end
+
+
+
+function WereWolf.EnableAndAuthorizeClick(nbClickAuthorized)
+    clickedPlayers = { };
+    nbClickAuth = nbClickAuthorized
+    for key, value in pairs(layouts) do
+        value.playerZone:SetDisabled(false)
+    end
 end

@@ -14,6 +14,4 @@ locales.xml
 Communications.lua
 
 Rules.lua
-WereWolf.lua
-GameFrame.lua
-#timer.lua
+Ui\Ui.xml
