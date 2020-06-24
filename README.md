@@ -1,3 +1,5 @@
+This AddOn is a dev version for now. Nobody can reasonably play with this for now.
+
 ## Install notice
 1. Download the file using the *Clone od Download* button just above.
 2. Unzip the files
