@@ -26,6 +26,9 @@ L["Invite"] = "Inviter"
 L["GMOptions"] = "Options de Maitre de Jeu"
 L["AddonGameMaster"] = "L'addon est le Maitre du Jeu"
 L["PlayGameMaster"] = "Vous êtes le Maitre de Jeu"
+L["TimerOptions"] = "Duréer des phases"
+L["VotePhaseTimer"] = "Durée de la phase de vote (sec)"
+L["WerewolfPhaseTimer"] = "Durée de la phase Loupo-garrou (sec)"
 
 -- Rogue panel
 L["You choose : "] = "Vous avez choisi : "

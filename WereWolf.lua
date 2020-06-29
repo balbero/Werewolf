@@ -145,8 +145,20 @@ local function DrawGroup2(container)
     WereWolf.InviteList(scroll)
     container:AddChild(scrollcontainer)
 
+    local optionContainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    optionContainer:SetWidth(300)
+    optionContainer:SetLayout("Fill")
+    optionContainer:SetFullHeight(true)
+    container:AddChild(optionContainer)
+    
+    local scrollOption = AceGUI:Create("ScrollFrame")
+    scrollOption:SetLayout("Flow")
+    optionContainer:AddChild(scrollOption)
+
     local gameMasterOption = AceGUI:Create("InlineGroup")
-    gameMasterOption:SetText(L["GMOptions"])
+    gameMasterOption:SetTitle(L["GMOptions"])
+    gameMasterOption:SetHeight(250)
+    gameMasterOption:SetFullWidth(true)
     local GMcheckBox = AceGUI:Create("CheckBox")
     local PlayGMcheckBox = AceGUI:Create("CheckBox")
     GMcheckBox:SetType("radio")
@@ -169,9 +181,33 @@ local function DrawGroup2(container)
     gameMasterOption:AddChild(GMcheckBox)
     gameMasterOption:AddChild(PlayGMcheckBox)
 
-    container:AddChild(gameMasterOption)
+    scrollOption:AddChild(gameMasterOption)
+
+    
+    local timerOption = AceGUI:Create("InlineGroup")
+    timerOption:SetTitle(L["TimerOptions"])
+    timerOption:SetHeight(150)
+    timerOption:SetFullWidth(true)
+
+    local voteTimer = AceGUI:Create("Slider")
+    voteTimer:SetSliderValues(30, 300, 10)
+    voteTimer:SetValue(120)
+    voteTimer:SetLabel(L["VotePhaseTimer"])
+    
+    timerOption:AddChild(voteTimer)
+
+    
+    local werewolfTimer = AceGUI:Create("Slider")
+    werewolfTimer:SetSliderValues(30, 300, 10)
+    werewolfTimer:SetValue(120)
+    werewolfTimer:SetLabel(L["WerewolfPhaseTimer"])
+    
+    timerOption:AddChild(werewolfTimer)
+
+    scrollOption:AddChild(timerOption)
 
     local startBtn = AceGUI:Create("Button")
+    startBtn:SetWidth(80)
     startBtn:SetText(L["Start"])
     startBtn:SetCallback("OnClick", function() 
         MainFrame:Hide()
@@ -184,8 +220,14 @@ local function DrawGroup2(container)
         end
 
     end)
+
+    local space = AceGUI:Create("Label")
+    space:SetText("") -- just space label
+    space:SetWidth(210)
     
-    container:AddChild(startBtn)
+    scrollOption:AddChild(space)
+    scrollOption:AddChild(startBtn)
+    
 
 end
 

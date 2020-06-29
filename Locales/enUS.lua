@@ -21,6 +21,9 @@ L["Invite"] = "Invite"
 L["GMOptions"] = "Game Master Options"
 L["AddonGameMaster"] = "Addon is the Game Master"
 L["PlayGameMaster"] = "You play the Game Master"
+L["TimerOptions"] = "Timer Options"
+L["VotePhaseTimer"] = "Vote phase timer (sec)"
+L["WerewolfPhaseTimer"] = "Werewolf phase timer (sec)"
 
 -- invite popup
 L["%s invited you tu play Werewolf.  Are you ok?"] = "%s invited you to play Werewolf.  Are you ok?"

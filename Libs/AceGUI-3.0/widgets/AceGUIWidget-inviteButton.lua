@@ -124,7 +124,7 @@ local function Constructor()
 	frame:Hide()
 
 	local label = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall")
-	label:SetPoint("BOTTOMLEFT")
+	label:SetPoint("BOTTOMLEFT", 5, 0)
 	label:SetPoint("BOTTOMRIGHT")
 	label:SetJustifyH("LEFT")
 	label:SetJustifyV("TOP")

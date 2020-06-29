@@ -55,7 +55,7 @@ function WereWolf.InviteList(container)
             playerInvite:SetCallback("OnClick", function() 
                 WereWolf.StoreInvitedPeople(playerInvite, name, class, GUID) 
             end)
-            playerInvite:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, 24*i)
+            playerInvite:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, 24*i - 2 )
             playerInvite:SetWidth(250)
             container:AddChild(playerInvite)
         end
