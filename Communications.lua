@@ -77,6 +77,11 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
 					local designatedPlayer, votedPlayer = unpack(data);
 					WereWolf.ManageVote(designatedPlayer, votedPlayer)
 				end
+			elseif command == "werewolf_invite" then
+				WereWolf.ShowInvitePopup(sender)
+			elseif 	command == "ww_accept_invite" or 
+					command == "ww_refuse_invite" then
+				WereWolf.ManageInvite(sender, command)
 			end
         end
     end

@@ -377,7 +377,7 @@ function WereWolf.Reset()
     isSetupStep = true
 end
 
-function WereWolf.Start()
+function WereWolf.StartAsPlayer()
     WereWolf.Reset()
     WereWolf.SetRoleToAllPlayer()
     WereWolf.SendRoleToAllPlayer()

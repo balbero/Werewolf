@@ -22,10 +22,19 @@ L["Start"] = "Demarrer"
 L["Game Rules"] = "Règles du jeu"
 L["Game Setup"] = "Configuration de la partie"
 L["GamePanel"] = "Panneau de jeu"
+L["Invite"] = "Inviter"
+L["GMOptions"] = "Options de Maitre de Jeu"
+L["AddonGameMaster"] = "L'addon est le Maitre du Jeu"
+L["PlayGameMaster"] = "Vous êtes le Maitre de Jeu"
 
 -- Rogue panel
 L["You choose : "] = "Vous avez choisi : "
 L["Choose Wisely"] = "Choisissez sagement"
+
+-- invite popup
+L["%s invited you tu play Werewolf.  Are you ok?"] = "%s t'invite à jouer au Loup-garrou. T'es partant?"
+L["Play it"] = "C'est parti"
+L["Hell No"] = "Non merci"
 
 -- Info tab
 L["GameGoalHeader"] = "BUT DU JEU"

@@ -18,6 +18,7 @@ WereWolf.normalWidth = 1.25
 WereWolf.halfWidth = WereWolf.normalWidth / 2
 WereWolf.doubleWidth = WereWolf.normalWidth * 2
 WereWolf.me = {}
+WereWolf.InvitedPlayers = {}
 WereWolf.players = {}
 WereWolf.currentStep = "";
 
@@ -138,9 +139,9 @@ function core:init(event, name)
 		isLover = false,
 		voteNb = 0
 	}
-	table.insert(WereWolf.players, WereWolf.me)
 
 	if isDevVersion then
+		table.insert(WereWolf.players, WereWolf.me)
 		local knownClass = { }
 		knownClass[1] = "SHAMAN"
 		knownClass[2] = "HUNTER"

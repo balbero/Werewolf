@@ -11,13 +11,16 @@ local InCombatLockdown = InCombatLockdown
 local GetScreenWidth, GetScreenHeight, GetBuildInfo, GetLocale, GetTime, CreateFrame, IsAddOnLoaded, LoadAddOn
   = GetScreenWidth, GetScreenHeight, GetBuildInfo, GetLocale, GetTime, CreateFrame, IsAddOnLoaded, LoadAddOn
 local UnitClass, GetFontString = UnitClass, GetFontString
+local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
 
 local LDBIcon = LibStub("LibDBIcon-1.0")
 local AceGUI = LibStub("AceGUI-3.0")
+local AceTimer = LibStub("AceTimer-3.0")
 
 local ADDON_NAME = "WereWolf"
 local WereWolf = WereWolf
 local L = WereWolf.L
+local Comm = WereWolf.Comm
 local versionString = WereWolf.versionString
 local prettyPrint = WereWolf.prettyPrint
 
@@ -29,6 +32,7 @@ local minHeight = 240
 local MainFrame;
 WereWolf.MainFrame = MainFrame
 local players = WereWolf.players
+
 
 
 function WereWolf.PrintHelp()
@@ -81,9 +85,9 @@ end
 
 -- function that draws the widgets for the first tab
 local function DrawGroup1(container)
-    local scrollcontainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    local scrollcontainer = AceGUI:Create("SimpleGroup") 
     scrollcontainer:SetFullWidth(true)
-    scrollcontainer:SetFullHeight(true) -- probably?
+    scrollcontainer:SetFullHeight(true) 
     scrollcontainer:SetLayout("Fill")
     container:AddChild(scrollcontainer)
 
@@ -128,20 +132,61 @@ end
   
 -- function that draws the widgets for the second tab
 local function DrawGroup2(container)
-    local desc = AceGUI:Create("Label")
-    desc:SetText("This is Game informations")
-    desc:SetFullWidth(true)
-    container:AddChild(desc)
+    local scrollcontainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    scrollcontainer:SetFullWidth(false)
+    scrollcontainer:SetWidth(300)
+    scrollcontainer:SetFullHeight(true) -- probably?
+    scrollcontainer:SetLayout("Fill")
 
-    local button = AceGUI:Create("Button")
-    button:SetText(L["Start"])
-    button:SetWidth(120)
-    button:SetCallback("OnClick", function() 
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("List")
+    scrollcontainer:AddChild(scroll)
+
+    WereWolf.InviteList(scroll)
+    container:AddChild(scrollcontainer)
+
+    local gameMasterOption = AceGUI:Create("InlineGroup")
+    gameMasterOption:SetText(L["GMOptions"])
+    local GMcheckBox = AceGUI:Create("CheckBox")
+    local PlayGMcheckBox = AceGUI:Create("CheckBox")
+    GMcheckBox:SetType("radio")
+    GMcheckBox:SetValue(true)
+    GMcheckBox:SetCallback("OnValueChanged", function(checked) 
+                                                if checked then 
+                                                    PlayGMcheckBox:SetValue(false) 
+                                                end 
+                                            end)
+    GMcheckBox:SetLabel(L["AddonGameMaster"])
+    PlayGMcheckBox:SetType("radio")
+    PlayGMcheckBox:SetValue(false)
+    PlayGMcheckBox:SetCallback("OnValueChanged", function(checked) 
+                                                if checked then 
+                                                    GMcheckBox:SetValue(false) 
+                                                end 
+                                            end)
+    PlayGMcheckBox:SetLabel(L["PlayGameMaster"])
+
+    gameMasterOption:AddChild(GMcheckBox)
+    gameMasterOption:AddChild(PlayGMcheckBox)
+
+    container:AddChild(gameMasterOption)
+
+    local startBtn = AceGUI:Create("Button")
+    startBtn:SetText(L["Start"])
+    startBtn:SetCallback("OnClick", function() 
         MainFrame:Hide()
-        WereWolf.Start()
+
+        if PlayGMcheckBox:GetValue() == true then
+            WereWolf.StartAsGameMaster()
+        else
+		    table.insert(WereWolf.players, WereWolf.me)
+            WereWolf.StartAsPlayer()
+        end
 
     end)
-    container:AddChild(button)
+    
+    container:AddChild(startBtn)
+
 end
 
 
@@ -188,7 +233,6 @@ function WereWolf.tooltip_draw()
 	tooltip:AddLine(L["|cffeda55fMiddle-Click|r to toggle the minimap icon on or off."], 0.2, 1, 0.2);
 	tooltip:Show();
 end
-
 
 function WereWolf.getAnchors(frame)
 	local x, y = frame:GetCenter()
