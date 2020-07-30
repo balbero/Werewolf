@@ -5,7 +5,7 @@ local versionString = "0.0.1"
 local LDBIcon = LibStub("LibDBIcon-1.0")
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1")
 
-local isDevVersion = true
+local isDevVersion = false
 local intendedWoWProject = WOW_PROJECT_MAINLINE
 
 local CreateFrame, UnitFullName, UnitName, UnitClass = CreateFrame, UnitFullName, UnitName, UnitClass;
