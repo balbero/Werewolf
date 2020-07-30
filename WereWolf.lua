@@ -33,6 +33,13 @@ local MainFrame;
 WereWolf.MainFrame = MainFrame
 local players = WereWolf.players
 
+StaticPopupDialogs["WEREWOLF_NOT_ENOUGH_PLAYER_POPUP"] = {
+    text = L["There is not enough player into the group to start a game!"],
+    button1 = L["Ok"],
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+}
 
 
 function WereWolf.PrintHelp()
@@ -213,8 +220,10 @@ local function DrawGroup2(container)
     startBtn:SetCallback("OnClick", function() 
 
         local count = 0
-        for _ in pairs(players) do count = count + 1 end
-        
+        for _ in pairs(players) do 
+            count = count + 1 
+        end
+
         if count >= WereWolf.MIN_PLAYER_COUNT then
             MainFrame:Hide()
 
@@ -226,7 +235,7 @@ local function DrawGroup2(container)
                 WereWolf.StartAsPlayer()
             end
         else
-            
+            StaticPopup_Show("WEREWOLF_NOT_ENOUGH_PLAYER_POPUP")
         end
     end)
 

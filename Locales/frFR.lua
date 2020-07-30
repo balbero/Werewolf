@@ -29,6 +29,8 @@ L["PlayGameMaster"] = "Vous êtes le Maitre de Jeu"
 L["TimerOptions"] = "Duréer des phases"
 L["VotePhaseTimer"] = "Durée de la phase de vote (sec)"
 L["WerewolfPhaseTimer"] = "Durée de la phase Loupo-garrou (sec)"
+L["There is not enough player into the group to start a game!"] = "Il n'y a pas assez de joueur pour démarrer une partie!"
+L["Ok"] = "Ok"
 
 -- Rogue panel
 L["You choose : "] = "Vous avez choisi : "

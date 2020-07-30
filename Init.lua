@@ -142,6 +142,7 @@ function core:init(event, name)
 	}
 
 	if isDevVersion then
+		WereWolf.MIN_PLAYER_COUNT = 20
 		table.insert(WereWolf.players, WereWolf.me)
 		local knownClass = { }
 		knownClass[1] = "SHAMAN"
