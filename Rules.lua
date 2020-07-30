@@ -377,6 +377,14 @@ function WereWolf.Reset()
     isSetupStep = true
 end
 
+function WereWolf.SendPlayerTable()
+    for _, value in pairs(players) do
+        if value.id ~= WereWolf.me.id then
+            Comm:SendCommand(value.Name, "add_player", value)
+        end
+    end
+end
+
 function WereWolf.StartAsPlayer()
     WereWolf.Reset()
     WereWolf.SetRoleToAllPlayer()
@@ -442,8 +450,10 @@ function WereWolf.CanContinue()
 end
 
 function WereWolf.SendRoleToAllPlayer()
-    for key, value in pairs(players) do
-        Comm:SendCommand(value.Name, "player_role", value.Role)
+    for _, value in pairs(players) do
+        if value.id ~= WereWolf.me.id then
+            Comm:SendCommand(value.Name, "player_role", value.Role)
+        end
     end
 end
 

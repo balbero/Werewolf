@@ -27,7 +27,12 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
         local test, command, data = LibAceSerializer:Deserialize(message);
 		if test then
 			WereWolf.printDebug(command)
-			if command == "player_role" then
+			if command == "add_player" then
+				local val = unpack(data);
+				if data.id ~= WereWolf.me.id then
+					WereWolf.AddPlayer(data.Name)
+				end
+			elseif command == "player_role" then
 				local val = unpack(data);
 				WereWolf.printDebug("role recieved : \n Name : "..val.Name.."\n Class : "..val.Class.."\n Icon : "..val.Icon.."\n Hint : "..val.Tips.."\n Goal : "..val.Goal)
 				WereWolf.SetSpecificRoleToPlayer(WereWolf.me, val)

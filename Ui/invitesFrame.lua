@@ -126,6 +126,5 @@ function WereWolf.SendAcceptInvite()
 end
 
 function WereWolf.SendRefuseInvite()
-    whoInvited = ""
     Comm:SendCommand(whoInvited, "ww_refuse_invite")
 end

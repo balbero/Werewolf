@@ -177,7 +177,8 @@ local function DrawGroup2(container)
                                                 end 
                                             end)
     PlayGMcheckBox:SetLabel(L["PlayGameMaster"])
-
+    PlayGMcheckBox:SetDisabled(true)
+    
     gameMasterOption:AddChild(GMcheckBox)
     gameMasterOption:AddChild(PlayGMcheckBox)
 
@@ -210,15 +211,23 @@ local function DrawGroup2(container)
     startBtn:SetWidth(80)
     startBtn:SetText(L["Start"])
     startBtn:SetCallback("OnClick", function() 
-        MainFrame:Hide()
 
-        if PlayGMcheckBox:GetValue() == true then
-            WereWolf.StartAsGameMaster()
+        local count = 0
+        for _ in pairs(players) do count = count + 1 end
+        
+        if count >= WereWolf.MIN_PLAYER_COUNT then
+            MainFrame:Hide()
+
+            if PlayGMcheckBox:GetValue() == true then
+                WereWolf.StartAsGameMaster()
+            else
+                table.insert(WereWolf.players, WereWolf.me)
+                WereWolf.SendPlayerTable()
+                WereWolf.StartAsPlayer()
+            end
         else
-		    table.insert(WereWolf.players, WereWolf.me)
-            WereWolf.StartAsPlayer()
+            
         end
-
     end)
 
     local space = AceGUI:Create("Label")

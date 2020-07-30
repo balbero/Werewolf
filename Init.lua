@@ -21,6 +21,7 @@ WereWolf.me = {}
 WereWolf.InvitedPlayers = {}
 WereWolf.players = {}
 WereWolf.currentStep = "";
+WereWolf.MIN_PLAYER_COUNT = 8
 
 WereWolf.isDevVersion = isDevVersion
 
