@@ -29,6 +29,5 @@
 	<Script file="widgets\AceGUIContainer-Werewolf_GameFrame.lua"/>
 	<Script file="widgets\AceGUIWidget-timerZone.lua"/>
 	<Script file="widgets\AceGUIWidget-Werewolf_player.lua"/>
-	
-	
+	<Script file="widgets\AceGUIWidget-inviteButton.lua"/>	
 </Ui>

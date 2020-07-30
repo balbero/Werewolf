@@ -11,13 +11,16 @@ local InCombatLockdown = InCombatLockdown
 local GetScreenWidth, GetScreenHeight, GetBuildInfo, GetLocale, GetTime, CreateFrame, IsAddOnLoaded, LoadAddOn
   = GetScreenWidth, GetScreenHeight, GetBuildInfo, GetLocale, GetTime, CreateFrame, IsAddOnLoaded, LoadAddOn
 local UnitClass, GetFontString = UnitClass, GetFontString
+local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo
 
 local LDBIcon = LibStub("LibDBIcon-1.0")
 local AceGUI = LibStub("AceGUI-3.0")
+local AceTimer = LibStub("AceTimer-3.0")
 
 local ADDON_NAME = "WereWolf"
 local WereWolf = WereWolf
 local L = WereWolf.L
+local Comm = WereWolf.Comm
 local versionString = WereWolf.versionString
 local prettyPrint = WereWolf.prettyPrint
 
@@ -29,6 +32,14 @@ local minHeight = 240
 local MainFrame;
 WereWolf.MainFrame = MainFrame
 local players = WereWolf.players
+
+StaticPopupDialogs["WEREWOLF_NOT_ENOUGH_PLAYER_POPUP"] = {
+    text = L["There is not enough player into the group to start a game!"],
+    button1 = L["Ok"],
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+}
 
 
 function WereWolf.PrintHelp()
@@ -81,9 +92,9 @@ end
 
 -- function that draws the widgets for the first tab
 local function DrawGroup1(container)
-    local scrollcontainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    local scrollcontainer = AceGUI:Create("SimpleGroup") 
     scrollcontainer:SetFullWidth(true)
-    scrollcontainer:SetFullHeight(true) -- probably?
+    scrollcontainer:SetFullHeight(true) 
     scrollcontainer:SetLayout("Fill")
     container:AddChild(scrollcontainer)
 
@@ -128,20 +139,114 @@ end
   
 -- function that draws the widgets for the second tab
 local function DrawGroup2(container)
-    local desc = AceGUI:Create("Label")
-    desc:SetText("This is Game informations")
-    desc:SetFullWidth(true)
-    container:AddChild(desc)
+    local scrollcontainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    scrollcontainer:SetFullWidth(false)
+    scrollcontainer:SetWidth(300)
+    scrollcontainer:SetFullHeight(true) -- probably?
+    scrollcontainer:SetLayout("Fill")
 
-    local button = AceGUI:Create("Button")
-    button:SetText(L["Start"])
-    button:SetWidth(120)
-    button:SetCallback("OnClick", function() 
-        MainFrame:Hide()
-        WereWolf.Start()
+    local scroll = AceGUI:Create("ScrollFrame")
+    scroll:SetLayout("List")
+    scrollcontainer:AddChild(scroll)
 
+    WereWolf.InviteList(scroll)
+    container:AddChild(scrollcontainer)
+
+    local optionContainer = AceGUI:Create("SimpleGroup") -- "InlineGroup" is also good
+    optionContainer:SetWidth(300)
+    optionContainer:SetLayout("Fill")
+    optionContainer:SetFullHeight(true)
+    container:AddChild(optionContainer)
+    
+    local scrollOption = AceGUI:Create("ScrollFrame")
+    scrollOption:SetLayout("Flow")
+    optionContainer:AddChild(scrollOption)
+
+    local gameMasterOption = AceGUI:Create("InlineGroup")
+    gameMasterOption:SetTitle(L["GMOptions"])
+    gameMasterOption:SetHeight(250)
+    gameMasterOption:SetFullWidth(true)
+    local GMcheckBox = AceGUI:Create("CheckBox")
+    local PlayGMcheckBox = AceGUI:Create("CheckBox")
+    GMcheckBox:SetType("radio")
+    GMcheckBox:SetValue(true)
+    GMcheckBox:SetCallback("OnValueChanged", function(checked) 
+                                                if checked then 
+                                                    PlayGMcheckBox:SetValue(false) 
+                                                end 
+                                            end)
+    GMcheckBox:SetLabel(L["AddonGameMaster"])
+    PlayGMcheckBox:SetType("radio")
+    PlayGMcheckBox:SetValue(false)
+    PlayGMcheckBox:SetCallback("OnValueChanged", function(checked) 
+                                                if checked then 
+                                                    GMcheckBox:SetValue(false) 
+                                                end 
+                                            end)
+    PlayGMcheckBox:SetLabel(L["PlayGameMaster"])
+    PlayGMcheckBox:SetDisabled(true)
+    
+    gameMasterOption:AddChild(GMcheckBox)
+    gameMasterOption:AddChild(PlayGMcheckBox)
+
+    scrollOption:AddChild(gameMasterOption)
+
+    
+    local timerOption = AceGUI:Create("InlineGroup")
+    timerOption:SetTitle(L["TimerOptions"])
+    timerOption:SetHeight(150)
+    timerOption:SetFullWidth(true)
+
+    local voteTimer = AceGUI:Create("Slider")
+    voteTimer:SetSliderValues(30, 300, 10)
+    voteTimer:SetValue(120)
+    voteTimer:SetLabel(L["VotePhaseTimer"])
+    
+    timerOption:AddChild(voteTimer)
+
+    
+    local werewolfTimer = AceGUI:Create("Slider")
+    werewolfTimer:SetSliderValues(30, 300, 10)
+    werewolfTimer:SetValue(120)
+    werewolfTimer:SetLabel(L["WerewolfPhaseTimer"])
+    
+    timerOption:AddChild(werewolfTimer)
+
+    scrollOption:AddChild(timerOption)
+
+    local startBtn = AceGUI:Create("Button")
+    startBtn:SetWidth(80)
+    startBtn:SetText(L["Start"])
+    startBtn:SetCallback("OnClick", function() 
+
+        local count = 0
+        for _ in pairs(players) do 
+            count = count + 1 
+        end
+
+        if count >= WereWolf.MIN_PLAYER_COUNT then
+            MainFrame:Hide()
+
+            if PlayGMcheckBox:GetValue() == true then
+                WereWolf.StartAsGameMaster()
+            else
+                table.insert(WereWolf.players, WereWolf.me)
+                WereWolf.SendPlayerTable()
+                WereWolf.StartAsPlayer()
+            end
+        else
+            StaticPopup_Show("WEREWOLF_NOT_ENOUGH_PLAYER_POPUP")
+        end
     end)
-    container:AddChild(button)
+
+    local space = AceGUI:Create("Label")
+    space:SetText("") -- just space label
+    space:SetWidth(210)
+    
+    scrollOption:AddChild(space)
+    scrollOption:AddChild(startBtn)
+    
+
 end
 
 
@@ -188,7 +293,6 @@ function WereWolf.tooltip_draw()
 	tooltip:AddLine(L["|cffeda55fMiddle-Click|r to toggle the minimap icon on or off."], 0.2, 1, 0.2);
 	tooltip:Show();
 end
-
 
 function WereWolf.getAnchors(frame)
 	local x, y = frame:GetCenter()

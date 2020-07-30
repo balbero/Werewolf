@@ -5,7 +5,7 @@ local versionString = "0.0.1"
 local LDBIcon = LibStub("LibDBIcon-1.0")
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1")
 
-local isDevVersion = true
+local isDevVersion = false
 local intendedWoWProject = WOW_PROJECT_MAINLINE
 
 local CreateFrame, UnitFullName, UnitName, UnitClass = CreateFrame, UnitFullName, UnitName, UnitClass;
@@ -18,8 +18,10 @@ WereWolf.normalWidth = 1.25
 WereWolf.halfWidth = WereWolf.normalWidth / 2
 WereWolf.doubleWidth = WereWolf.normalWidth * 2
 WereWolf.me = {}
+WereWolf.InvitedPlayers = {}
 WereWolf.players = {}
 WereWolf.currentStep = "";
+WereWolf.MIN_PLAYER_COUNT = 8
 
 WereWolf.isDevVersion = isDevVersion
 
@@ -138,9 +140,10 @@ function core:init(event, name)
 		isLover = false,
 		voteNb = 0
 	}
-	table.insert(WereWolf.players, WereWolf.me)
 
 	if isDevVersion then
+		WereWolf.MIN_PLAYER_COUNT = 20
+		table.insert(WereWolf.players, WereWolf.me)
 		local knownClass = { }
 		knownClass[1] = "SHAMAN"
 		knownClass[2] = "HUNTER"

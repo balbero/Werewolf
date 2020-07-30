@@ -17,6 +17,20 @@ L["Start"] = "Start"
 L["Game Rules"] = "Game Rules"
 L["Game Setup"] = "Game Setup"
 L["GamePanel"] = "Game Panel"
+L["Invite"] = "Invite"
+L["GMOptions"] = "Game Master Options"
+L["AddonGameMaster"] = "Addon is the Game Master"
+L["PlayGameMaster"] = "You play the Game Master"
+L["TimerOptions"] = "Timer Options"
+L["VotePhaseTimer"] = "Vote phase timer (sec)"
+L["WerewolfPhaseTimer"] = "Werewolf phase timer (sec)"
+L["There is not enough player into the group to start a game!"] = "There is not enough player into the group to start a game!"
+L["Ok"] = "Ok"
+
+-- invite popup
+L["%s invited you tu play Werewolf.  Are you ok?"] = "%s invited you to play Werewolf.  Are you ok?"
+L["Play it"] = "Play it"
+L["Hell No"] = "Hell No"
 
 -- Rogue panel
 L["You choose : "] = "You choose : "

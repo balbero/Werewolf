@@ -162,8 +162,6 @@ function WereWolf.SaveClickedPortrait(player)
     end
 end
 
-
-
 function WereWolf.EnableAndAuthorizeClick(nbClickAuthorized)
     clickedPlayers = { };
     nbClickAuth = nbClickAuthorized

@@ -13,5 +13,7 @@ locales.xml
 
 Communications.lua
 
+Vote.lua
 Rules.lua
+WereWolf.lua
 Ui\Ui.xml

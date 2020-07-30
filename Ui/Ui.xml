@@ -2,4 +2,5 @@
 ..\FrameXML\UI.xsd">
 	<Script file="GameFrame.lua"/>
 	<Script file="RogueFrame.lua"/>
+	<Script file="InvitesFrame.lua"/>
 </Ui>
