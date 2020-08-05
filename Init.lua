@@ -1,6 +1,6 @@
 local _, core =...
 local versionStringFromToc = GetAddOnMetadata("WereWolf", "Version")
-local versionString = "0.0.1"
+local versionString = "0.0.2"
 
 local LDBIcon = LibStub("LibDBIcon-1.0")
 local LDB = LibStub:GetLibrary("LibDataBroker-1.1")
@@ -9,6 +9,7 @@ local isDevVersion = false
 local intendedWoWProject = WOW_PROJECT_MAINLINE
 
 local CreateFrame, UnitFullName, UnitName, UnitClass = CreateFrame, UnitFullName, UnitName, UnitClass;
+local GetNumGuildMembers, GetGuildRosterInfo = GetNumGuildMembers, GetGuildRosterInfo;
 
 WereWolf = {}
 WerewolfDB = WerewolfDB or {};
@@ -19,6 +20,7 @@ WereWolf.halfWidth = WereWolf.normalWidth / 2
 WereWolf.doubleWidth = WereWolf.normalWidth * 2
 WereWolf.me = {}
 WereWolf.InvitedPlayers = {}
+WereWolf.InvitablePlayers = {}
 WereWolf.players = {}
 WereWolf.currentStep = "";
 WereWolf.MIN_PLAYER_COUNT = 8
@@ -125,10 +127,10 @@ local function HandleSlashCommands(str)
 	end
 end
 
-function core:init(event, name)
-	if(name ~= "WereWolf") then
-		return
-	end
+
+function WereWolf.init()
+	print("WereWolf.init")
+	WereWolf.setupInvitablePlayers(true)  
 
 	WereWolf.me = {
 		id = UnitGUID("player"),
@@ -172,6 +174,7 @@ function core:init(event, name)
 			table.insert(WereWolf.players, dummy)
 		end
 	end
+
 	db = WerewolfDB;	
 	db.minimap = db.minimap or { hide = false };
 	LDBIcon:Register("WereWolf", Broker_WereWolf, db.minimap);
@@ -183,6 +186,26 @@ function core:init(event, name)
 	WereWolf.prettyPrint(" version "..versionString.." loaded")
 end
 
+
+function core:eventHandler(event, ...)
+	
+	if event == "ADDON_LOADED" then 
+		local name = ...
+		if name == "WereWolf" then
+			WereWolf.init()
+		end
+	elseif event == "PLAYER_LOGIN" then
+		local isInitialLogin, isReloadingUi = ...
+		if isInitialLogin == true then
+			WereWolf.setupInvitablePlayers(true)
+		end
+	elseif event == "PLAYER_LOGOUT" then
+		WereWolf.setupInvitablePlayers(false)
+	end
+end
+
 local eventFrame = CreateFrame("Frame");
 eventFrame:RegisterEvent("ADDON_LOADED");
-eventFrame:SetScript("OnEvent", core.init);
+eventFrame:RegisterEvent("PLAYER_LOGIN");
+eventFrame:RegisterEvent("PLAYER_LOGOUT");
+eventFrame:SetScript("OnEvent", core.eventHandler);

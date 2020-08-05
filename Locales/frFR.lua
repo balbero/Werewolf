@@ -37,7 +37,7 @@ L["You choose : "] = "Vous avez choisi : "
 L["Choose Wisely"] = "Choisissez sagement"
 
 -- invite popup
-L["%s invited you tu play Werewolf.  Are you ok?"] = "%s t'invite à jouer au Loup-garrou. T'es partant?"
+L["invited you tu play Werewolf.  Are you ok?"] = " t'invite à jouer au Loup-garrou. T'es partant?"
 L["Play it"] = "C'est parti"
 L["Hell No"] = "Non merci"
 

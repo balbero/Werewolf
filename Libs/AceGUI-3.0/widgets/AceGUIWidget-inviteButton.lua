@@ -31,6 +31,8 @@ local function Control_OnLeave(frame)
 	frame.obj:Fire("OnLeave")
 end
 
+
+local id = "";
 --[[-----------------------------------------------------------------------------
 Methods
 -------------------------------------------------------------------------------]]
@@ -44,6 +46,13 @@ local methods = {
 		self:SetText()
 		self:SetLabel()
 		self:SetFontObject()
+		self:SetAnswer()
+	end,
+	["SetId"] = function(self, text)
+		id = text
+	end,
+	["GetId"] = function(self)
+		return id
 	end,
 
 	-- ["OnRelease"] = nil,
@@ -81,6 +90,15 @@ local methods = {
 		self.text:SetText(text)
 		if self.autoWidth then
 			self:SetWidth(self.text:GetStringWidth() + 30)
+		end
+	end,
+
+	["SetAnswer"] = function(self, text)
+		self.answer:SetText(text)
+		if text == "OK" then
+			self.label:SetVertexColor(0,1,0)
+		elseif text == "KO" then
+			self.label:SetVertexColor(1,0,0)
 		end
 	end,
 
@@ -152,6 +170,13 @@ local function Constructor()
 	text:SetPoint("BOTTOMRIGHT", -15, 1)
 	text:SetJustifyV("MIDDLE")
 
+	local answer = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall")
+	answer:SetPoint("BOTTOMRIGHT", -30, 0)
+	answer:SetPoint("BOTTOMRIGHT")
+	answer:SetJustifyH("LEFT")
+	answer:SetJustifyV("TOP")
+	answer:SetHeight(18)
+
 
 	local widget = {
 		frame = frame,
@@ -159,6 +184,7 @@ local function Constructor()
 		frameBtn = frameBtn,
 		button = button,
 		text  = text,
+		answer = answer,
 		type  = Type
 	}
 	for method, func in pairs(methods) do

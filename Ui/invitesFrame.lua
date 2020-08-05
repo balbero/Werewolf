@@ -13,9 +13,13 @@ local invitedPlayers = WereWolf.InvitedPlayers;
 local whoInvited = "";
 
 StaticPopupDialogs["WEREWOLF_INVITE_POPUP"] = {
-    text = L["%s invited you tu play Werewolf.  Are you ok?"],
+    text = L["invited you tu play Werewolf.  Are you ok?"],
     button1 = L["Play it"],
     button2 = L["Hell No"],
+    OnShow = function(self, sender)
+        local text = self.text:GetText()
+        self.text:SetText(sender..text)
+    end,
     OnAccept = function()
         WereWolf.SendAcceptInvite()
     end,
@@ -39,26 +43,55 @@ function WereWolf.ShowInvitePopup(sender)
     end
 end
 
-function WereWolf.InviteList(container)
-     
-    local guildMembersNb = GetNumGuildMembers()
+
+function WereWolf.setupInvitablePlayers(isAdded)
+	
+	local guildMembersNb = GetNumGuildMembers()
     for i=1,guildMembersNb do
         local name, _, _, _, _, _, _, _, isOnline, _, class, _, _, _, _, _, GUID = GetGuildRosterInfo(i)
+		if isOnline then
+			local found = nil;
+			for _, v in pairs(WereWolf.InvitablePlayers) do
+				if v.id == GUID then
+					found = v
+					break
+				end 
+			end
 
-        if isOnline and GUID ~= WereWolf.me.id then
-            
-            local playerInvite = AceGUI:Create("InviteButton")
-            playerInvite:SetLabel(name)
-            playerInvite:SetText(L["Invite"])    
-            local color = RAID_CLASS_COLORS[class]
-            playerInvite:SetLabelColor(color.r, color.g, color.b)
-            playerInvite:SetCallback("OnClick", function() 
-                WereWolf.StoreInvitedPeople(playerInvite, name, class, GUID) 
-            end)
-            playerInvite:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, 24*i - 2 )
-            playerInvite:SetWidth(250)
-            container:AddChild(playerInvite)
-        end
+			if found == nil and isAdded == true and GUID ~= UnitGUID("player") then
+				local playerInvite = AceGUI:Create("InviteButton")
+                playerInvite:SetLabel(name)
+                playerInvite:SetId(GUID)
+                playerInvite:SetText(L["Invite"])    
+                local color = RAID_CLASS_COLORS[class]
+                playerInvite:SetLabelColor(color.r, color.g, color.b)
+                playerInvite:SetCallback("OnClick", function() 
+                    WereWolf.StoreInvitedPeople(playerInvite, name, class, GUID) 
+                end)
+				table.insert(WereWolf.InvitablePlayers, playerInvite)
+			end
+		else
+			local found = nil;
+			for _, v in pairs(WereWolf.InvitablePlayers) do
+				if v:GetId() == GUID then
+					found = v
+					break
+				end 
+			end
+			if found ~= nil and isAdded == false then
+				table.remove(WereWolf.InvitablePlayers, found)
+			end
+		end
+	end
+end
+
+function WereWolf.InviteList(container)
+    local i = 0;
+    for _, v in pairs(WereWolf.InvitablePlayers) do   
+        v:SetPoint("TOPLEFT", container.frame, "TOPLEFT", 0, 24*i - 2 )
+        v:SetWidth(250)
+        container:AddChild(v)
+        i = i + 1;
     end
 end
 
@@ -111,9 +144,11 @@ function WereWolf.ManageInvites(player, response)
         AceTimer:CancelTimer(foundPlayer.inviteTimer)
 
         if response == "ww_accept_invite" then
+            foundPlayer.inviteUI:SetAnswer("OK")
             foundPlayer.inviteUI:SetDisabled()
             WereWolf.AddPlayer(foundPlayer.Name)
         else
+            foundPlayer.inviteUI:SetAnswer("KO")
             foundPlayer.inviteUI:ShowButton()
             table.remove(invitedPlayers, pos)
         end

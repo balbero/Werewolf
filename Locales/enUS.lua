@@ -28,7 +28,7 @@ L["There is not enough player into the group to start a game!"] = "There is not 
 L["Ok"] = "Ok"
 
 -- invite popup
-L["%s invited you tu play Werewolf.  Are you ok?"] = "%s invited you to play Werewolf.  Are you ok?"
+L["invited you tu play Werewolf.  Are you ok?"] = " invited you to play Werewolf.  Are you ok?"
 L["Play it"] = "Play it"
 L["Hell No"] = "Hell No"
 
