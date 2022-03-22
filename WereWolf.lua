@@ -200,6 +200,9 @@ local function DrawGroup2(container)
     local voteTimer = AceGUI:Create("Slider")
     voteTimer:SetSliderValues(30, 300, 10)
     voteTimer:SetValue(120)
+    voteTimer:SetCallback("OnValueChanged", function(value) 
+        WereWolf.VoteTimer = value
+    end)
     voteTimer:SetLabel(L["VotePhaseTimer"])
     
     timerOption:AddChild(voteTimer)
@@ -208,6 +211,9 @@ local function DrawGroup2(container)
     local werewolfTimer = AceGUI:Create("Slider")
     werewolfTimer:SetSliderValues(30, 300, 10)
     werewolfTimer:SetValue(120)
+    werewolfTimer:SetCallback("OnValueChanged", function(value) 
+        WereWolf.WereWolfPhaseTimer = value
+    end)
     werewolfTimer:SetLabel(L["WerewolfPhaseTimer"])
     
     timerOption:AddChild(werewolfTimer)

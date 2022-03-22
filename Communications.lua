@@ -62,11 +62,11 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
 			elseif command == "set_lover" then
 				WereWolf.ShowTimerFrame(L["Lovers, wake up and face your beloved!"], 20)
 			elseif command == "set_werwolves" then
-				WereWolf.ShowTimerFrame(L["Werewolves, wake up and eat, eat till your hunger are filled!"], 120)
+				WereWolf.ShowTimerFrame(L["Werewolves, wake up and eat, eat till your hunger are filled!"], WereWolf.WereWolfPhaseTimer )
 			elseif command == "set_witch" then
 				WereWolf.ShowTimerFrame(L["Witch, wake up and decides with your potions!"], 60)
 			elseif command == "set_vote" then
-				WereWolf.ShowTimerFrame(L["Villagers vote! Point the one who killed!"], 120)
+				WereWolf.ShowTimerFrame(L["Villagers vote! Point the one who killed!"], WereWolf.VoteTimer)
 			elseif command == "next_step" then
 				WereWolf.NextStep()
 			elseif command == "game_ends" then
@@ -86,7 +86,7 @@ function WereWolf.Comm:OnCommReceived(prefix, message, distribution, sender)
 				WereWolf.ShowInvitePopup(sender)
 			elseif 	command == "ww_accept_invite" or 
 					command == "ww_refuse_invite" then
-				WereWolf.ManageInvite(sender, command)
+				WereWolf.ManageInvites(sender, command)
 			end
         end
     end

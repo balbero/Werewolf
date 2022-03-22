@@ -24,6 +24,8 @@ WereWolf.InvitablePlayers = {}
 WereWolf.players = {}
 WereWolf.currentStep = "";
 WereWolf.MIN_PLAYER_COUNT = 8
+WereWolf.WereWolfPhaseTimer = 120
+WereWolf.VoteTimer = 120
 
 WereWolf.isDevVersion = isDevVersion
 

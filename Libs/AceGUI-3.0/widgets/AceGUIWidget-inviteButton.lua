@@ -96,9 +96,9 @@ local methods = {
 	["SetAnswer"] = function(self, text)
 		self.answer:SetText(text)
 		if text == "OK" then
-			self.label:SetVertexColor(0,1,0)
+			self.answer:SetVertexColor(0,1,0)
 		elseif text == "KO" then
-			self.label:SetVertexColor(1,0,0)
+			self.answer:SetVertexColor(1,0,0)
 		end
 	end,
 
@@ -171,7 +171,7 @@ local function Constructor()
 	text:SetJustifyV("MIDDLE")
 
 	local answer = frame:CreateFontString(nil, "BACKGROUND", "GameFontHighlightSmall")
-	answer:SetPoint("BOTTOMRIGHT", -30, 0)
+	answer:SetPoint("TOPRIGHT", -5, 0)
 	answer:SetPoint("BOTTOMRIGHT")
 	answer:SetJustifyH("LEFT")
 	answer:SetJustifyV("TOP")

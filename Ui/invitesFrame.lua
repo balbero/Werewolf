@@ -49,7 +49,7 @@ function WereWolf.setupInvitablePlayers(isAdded)
 	local guildMembersNb = GetNumGuildMembers()
     for i=1,guildMembersNb do
         local name, _, _, _, _, _, _, _, isOnline, _, class, _, _, _, _, _, GUID = GetGuildRosterInfo(i)
-		if isOnline then
+		if isOnline == true then
 			local found = nil;
 			for _, v in pairs(WereWolf.InvitablePlayers) do
 				if v.id == GUID then
@@ -70,7 +70,7 @@ function WereWolf.setupInvitablePlayers(isAdded)
                 end)
 				table.insert(WereWolf.InvitablePlayers, playerInvite)
 			end
-		else
+		elseif isOnline == false then
 			local found = nil;
 			for _, v in pairs(WereWolf.InvitablePlayers) do
 				if v:GetId() == GUID then
@@ -78,7 +78,8 @@ function WereWolf.setupInvitablePlayers(isAdded)
 					break
 				end 
 			end
-			if found ~= nil and isAdded == false then
+            if found ~= nil and isAdded == false then
+                AceGUI:Release(found)
 				table.remove(WereWolf.InvitablePlayers, found)
 			end
 		end
